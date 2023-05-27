@@ -9,7 +9,7 @@ mongoose.set('strictQuery', true);
 //Connection à la base de données MongoDB publication-service-db
 //(Mongoose créera la base de données s'il ne le trouve pas)
 mongoose.connect(
-    "mongodb://localhost/produit-service",
+    "mongodb://db:27017/produit-service",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -22,7 +22,7 @@ mongoose.connect(
 //Ainsi, dans le bloc then(), nous renverrons une réponse de réussite avec un code 201 de réussite.
 //Dans le bloc catch () , nous renverrons une réponse avec l'erreur générée par Mongoose ainsi qu'un code d'erreur 400.
 
-app.post("/produit/ajouter", (req, res, next) => {
+app.post("http://produits:4000/produit/ajouter", (req, res, next) => {
     const { nom, description, prix } = req.body;
     const newProduit = new Produit({
         nom,
@@ -35,7 +35,7 @@ app.post("/produit/ajouter", (req, res, next) => {
 });
 
 
-app.post("/produit/acheter", (req, res, next) => {
+app.post("http://produits:4000/produit/acheter", (req, res, next) => {
     const { ids } = req.body;
     Produit.find({ _id: { $in: ids } })
         .then(produits => res.status(201).json(produits))

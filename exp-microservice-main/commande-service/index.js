@@ -9,7 +9,7 @@ const isAuthenticated = require('./isAuthenticated');
 //Connexion à la base de données
 mongoose.set('strictQuery', true);
 mongoose.connect(
-    "mongodb://localhost/commande-service",
+    "mongodb://db:27017/commande-service",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -32,7 +32,7 @@ function prixTotal(produits) {
 //Cette fnction envoie une requête http au service produit pour récupérer le tableau des produits qu'on désire commander (en se basant sur leurs ids)
 async function httpRequest(ids) {
     try {
-        const URL = "http://localhost:4000/produit/acheter"
+        const URL = "http://produit:4000/produit/acheter"
         const response = await axios.post(URL, { ids: ids }, {
             headers: {
                 'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ async function httpRequest(ids) {
         console.error(error);
     }
 }
-app.post("/commande/ajouter", isAuthenticated, async (req, res, next) => {
+app.post("http://commande:4001/commande/ajouter", isAuthenticated, async (req, res, next) => {
     // Création d'une nouvelle commande dans la collection commande 
     const { ids } = req.body;
     httpRequest(ids).then(total => {

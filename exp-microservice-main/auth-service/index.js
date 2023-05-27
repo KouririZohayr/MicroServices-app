@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
-    "mongodb://localhost/auth-service",
+    "mongodb://db:27017/auth-service",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
