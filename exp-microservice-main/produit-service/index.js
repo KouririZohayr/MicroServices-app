@@ -49,13 +49,23 @@ app.get("/produit/", (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 
 });
-app.put("/produit/update/:id", (req, res, next) => {
-    const { ids } = req.body;
-    const { nom, description, prix } = req.body;
-    Produit.updateOne()
-        .then(produits => res.status(201).json(produits))
-        .catch(error => res.status(400).json({ error }));
-
+app.put("/produit/:id", async (req, res, next) => {
+    try{
+        const myid=(req.params.id);
+        const produit=await Produit.findById(myid);
+        if(!produit){
+            res.status(404).json({message:'produit non trouvé'})
+            return;
+        }
+        produit.nom=req.body.nom||produit.nom
+        produit.description=req.body.description||produit.description
+        produit.prix=req.body.prix||produit.prix
+        await produit.save();
+        res.status(200).json(produit)
+    }
+    catch(error){
+        res.status(500).json({message:error.message});
+    }
 });
 
 
